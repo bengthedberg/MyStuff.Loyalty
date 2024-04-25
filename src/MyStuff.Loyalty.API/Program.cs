@@ -4,7 +4,7 @@ using MyStuff.Loyalty.Modules.Customers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCustomersModule();
+builder.Services.AddCustomersModule(builder.Configuration);
 builder.Services.AddSharedInfrastructure();
 
 var app = builder.Build();

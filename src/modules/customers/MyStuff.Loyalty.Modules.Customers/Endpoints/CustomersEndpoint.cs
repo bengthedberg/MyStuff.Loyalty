@@ -19,8 +19,8 @@ public class CustomersEndpoint : IEndpointDefinition
         services.AddScoped<ICustomersService, CustomersService>();
     }
 
-    internal IEnumerable<Customer> GetAllCustomers(ICustomersService customersService)
+    internal async Task<IEnumerable<Customer>> GetAllCustomers(ICustomersService customersService)
     {
-        return customersService.GetAll();
+        return await customersService.GetAll();
     }
 }

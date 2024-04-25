@@ -4,6 +4,6 @@ namespace MyStuff.Loyalty.Modules.Customers.Services;
 
 public interface ICustomersService
 {
-    IEnumerable<Customer> GetAll();
+    Task<IEnumerable<Customer>> GetAll();
 
 }
