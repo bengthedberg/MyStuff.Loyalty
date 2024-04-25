@@ -11,11 +11,12 @@
       "preLaunchTask": "build",
       "program": "${workspaceFolder}/src/MyStuff.Loyalty.API/bin/Debug/net8.0/MyStuff.Loyalty.API.dll",
       "args": [],
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/src/MyStuff.Loyalty.API/bin/Debug/net8.0",
       "stopAtEntry": false,
       "serverReadyAction": {
         "action": "openExternally",
-        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s/swagger/index.html"
       },
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"

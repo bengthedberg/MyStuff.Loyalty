@@ -6,4 +6,8 @@ public interface ICustomersService
 {
     Task<IEnumerable<Customer>> GetAll();
 
+    Task<Customer?> GetById(int id);
+
+    Task<Customer?> Add(Customer Customer);
+
 }
