@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\common\MyStuff.Loyalty.Common.Infrastructure\MyStuff.Loyalty.Common.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\common\MyStuff.Loyalty.Common.Abstractions\MyStuff.Loyalty.Common.Abstractions.csproj" />
+    <ProjectReference Include="..\MyStuff.Loyalty.Modules.Customers.Shared\MyStuff.Loyalty.Modules.Customers.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\common\MyStuff.Loyalty.Common.Infrastructure\MyStuff.Loyalty.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyStuff.Loyalty.Modules.Profiles.Shared\MyStuff.Loyalty.Modules.Profiles.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

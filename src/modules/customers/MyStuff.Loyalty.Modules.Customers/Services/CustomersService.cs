@@ -7,15 +7,18 @@ namespace MyStuff.Loyalty.Modules.Customers.Services;
 public class CustomersService : ICustomersService
 {
     private readonly CustomersDbContext _ctx;
+    private readonly TimeProvider _timeProvider;
 
-    public CustomersService(CustomersDbContext ctx)
+    public CustomersService(CustomersDbContext ctx, TimeProvider timeProvider)
     {
         _ctx = ctx;
+        _timeProvider = timeProvider;
     }
 
-    public async Task<Customer?> AddCustomerAsync(Customer customer)
+    public async Task<Customer?> AddCustomerAsync(Customer newCustomer)
     {
-        _ctx.Customers.Add(customer);
+        newCustomer.DateCreated = _timeProvider.GetUtcNow();
+        _ctx.Customers.Add(newCustomer);
         var saved = await _ctx.SaveChangesAsync();
         if (saved == 0)
         {
@@ -23,10 +26,20 @@ public class CustomersService : ICustomersService
         }
         else
         {
-            return customer;
+            return newCustomer;
         }
     }
 
+    public async Task DeleteCustomer(int id)
+    {
+        var customer = await _ctx.Customers.FirstOrDefaultAsync(p => p.Id == id);
+        if (customer == null)
+        {
+            return;
+        }
+        _ctx.Customers.Remove(customer);
+        await _ctx.SaveChangesAsync();
+    }
 
     public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
     {
@@ -36,5 +49,17 @@ public class CustomersService : ICustomersService
     public async Task<Customer?> GetCustomerByIdAsync(int id)
     {
         return await _ctx.Customers.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task UpdateCustomer(int id, string name)
+    {
+        var customer = await _ctx.Customers.FirstOrDefaultAsync(p => p.Id == id);
+        if (customer == null)
+        {
+            return;
+        }
+        customer.Name = name;
+        customer.LastModified = _timeProvider.GetUtcNow();
+        await _ctx.SaveChangesAsync();
     }
 }
