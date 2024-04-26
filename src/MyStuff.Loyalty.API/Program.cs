@@ -9,6 +9,7 @@ builder.Services.AddSharedInfrastructure();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandleMiddleware>();
 app.UseEndPointDefinitions();
 
 app.Run();
