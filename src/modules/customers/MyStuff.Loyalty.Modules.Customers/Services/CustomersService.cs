@@ -13,7 +13,7 @@ public class CustomersService : ICustomersService
         _ctx = ctx;
     }
 
-    public async Task<Customer?> Add(Customer customer)
+    public async Task<Customer?> AddCustomerAsync(Customer customer)
     {
         _ctx.Customers.Add(customer);
         var saved = await _ctx.SaveChangesAsync();
@@ -28,12 +28,12 @@ public class CustomersService : ICustomersService
     }
 
 
-    public async Task<IEnumerable<Customer>> GetAll()
+    public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
     {
         return await _ctx.Customers.ToListAsync();
     }
 
-    public async Task<Customer?> GetById(int id)
+    public async Task<Customer?> GetCustomerByIdAsync(int id)
     {
         return await _ctx.Customers.FirstOrDefaultAsync(x => x.Id == id);
     }

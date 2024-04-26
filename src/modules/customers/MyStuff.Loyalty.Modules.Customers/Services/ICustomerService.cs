@@ -4,10 +4,10 @@ namespace MyStuff.Loyalty.Modules.Customers.Services;
 
 public interface ICustomersService
 {
-    Task<IEnumerable<Customer>> GetAll();
+    Task<IEnumerable<Customer>> GetAllCustomersAsync();
 
-    Task<Customer?> GetById(int id);
+    Task<Customer?> GetCustomerByIdAsync(int id);
 
-    Task<Customer?> Add(Customer Customer);
+    Task<Customer?> AddCustomerAsync(Customer Customer);
 
 }
