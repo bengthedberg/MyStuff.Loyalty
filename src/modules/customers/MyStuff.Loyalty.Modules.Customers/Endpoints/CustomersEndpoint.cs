@@ -29,19 +29,22 @@ public class CustomersEndpoint : IEndpointDefinition
     internal async Task<IResult> GetAllCustomers(ICustomersService customersService)
     {
         var customers = await customersService.GetAllCustomersAsync();
-        return TypedResults.Ok(customers);
+        var response = customers.Select(c => CustomerDTO.MapFrom(c));
+        return TypedResults.Ok(response);
     }
 
     internal async Task<IResult> GetCustomerById(ICustomersService customersService, int id)
     {
         var customer = await customersService.GetCustomerByIdAsync(id);
-        return customer is not null ? Results.Ok(customer) : Results.NotFound();
+        var response = CustomerDTO.MapFrom(customer);
+        return customer is not null ? Results.Ok(response) : Results.NotFound();
     }
 
     internal async Task<IResult> AddCustomer(ICustomersService customersService, CreateCustomerRequestDTO request)
     {
         var newCustomer = await customersService.AddCustomerAsync(new Customer { Name = request.Name });
-        return TypedResults.CreatedAtRoute<Customer>(newCustomer, "GetCustomerById", new { id = newCustomer.Id});
+        var response = CustomerDTO.MapFrom(newCustomer);
+        return TypedResults.CreatedAtRoute<CustomerDTO>(response, "GetCustomerById", new { id = response.Id});
     }
 
     internal async Task<IResult> UpdateCustomer(ICustomersService customersService, int id, UpdateCustomerRequestDTO request)
