@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 using MyStuff.Loyalty.Common.Abstractions;
-using MyStuff.Loyalty.Modules.Customers.Contracts.DTOs;
+using MyStuff.Loyalty.Common.Abstractions.Validations;
+using MyStuff.Loyalty.Modules.Customers.Endpoints.Requests;
+using MyStuff.Loyalty.Modules.Customers.Endpoints.Responses;
 using MyStuff.Loyalty.Modules.Customers.Model;
 using MyStuff.Loyalty.Modules.Customers.Services;
 
@@ -15,10 +17,13 @@ public class CustomersEndpoint : IEndpointDefinition
     public void DefineEndpoints(WebApplication app)
     {
         app.MapGet("customers", GetAllCustomers);
-        app.MapGet("customers/{id}", GetCustomerById).WithName("GetCustomerById");
-        app.MapPost("customers", AddCustomer);
-        app.MapPut("customers/{id}", UpdateCustomer);
-        app.MapDelete("customers/{id}", DeleteCustomerById);
+        app.MapGet("customers/{id:int}", GetCustomerById)
+            .WithName("GetCustomerById");
+        app.MapPost("customers", AddCustomer)
+            .AddEndpointFilter<EndpointFluentValidationFilter<CreateCustomerRequest>>();
+        app.MapPut("customers/{id:int}", UpdateCustomer)
+            .AddEndpointFilter<EndpointFluentValidationFilter<UpdateCustomerRequest>>();
+        app.MapDelete("customers/{id:int}", DeleteCustomerById);
     }
 
     public void DefineServices(IServiceCollection services)
@@ -40,14 +45,14 @@ public class CustomersEndpoint : IEndpointDefinition
         return customer is not null ? Results.Ok(response) : Results.NotFound();
     }
 
-    internal async Task<IResult> AddCustomer(ICustomersService customersService, CreateCustomerRequestDTO request)
+    internal async Task<IResult> AddCustomer(ICustomersService customersService, CreateCustomerRequest request)
     {
         var newCustomer = await customersService.AddCustomerAsync(new Customer { Name = request.Name });
         var response = CustomerDTO.MapFrom(newCustomer);
         return TypedResults.CreatedAtRoute<CustomerDTO>(response, "GetCustomerById", new { id = response.Id});
     }
 
-    internal async Task<IResult> UpdateCustomer(ICustomersService customersService, int id, UpdateCustomerRequestDTO request)
+    internal async Task<IResult> UpdateCustomer(ICustomersService customersService, int id, UpdateCustomerRequest request)
     {
         await customersService.UpdateCustomer(id, request.Name);
         return Results.NoContent();

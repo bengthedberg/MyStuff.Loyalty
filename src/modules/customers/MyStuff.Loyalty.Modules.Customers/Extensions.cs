@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,8 @@ public static class Extensions
     public static void AddCustomersModule(this IServiceCollection services, ConfigurationManager config)
     {
         services.AddEndpointDefinitions(typeof(Extensions));
+
+        services.AddValidatorsFromAssemblies(new[] { typeof(Extensions).Assembly });
 
         string connectionString = config.GetConnectionString("CustomerDatabase") ?? string.Empty;
         services.AddDbContext<CustomersDbContext>(options =>

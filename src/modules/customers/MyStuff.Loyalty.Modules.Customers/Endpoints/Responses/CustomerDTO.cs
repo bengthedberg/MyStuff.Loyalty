@@ -1,6 +1,6 @@
 ﻿using MyStuff.Loyalty.Modules.Customers.Model;
 
-namespace MyStuff.Loyalty.Modules.Customers;
+namespace MyStuff.Loyalty.Modules.Customers.Endpoints.Responses;
 
 public record CustomerDTO 
 {
